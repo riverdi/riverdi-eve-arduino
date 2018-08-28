@@ -1,0 +1,7 @@
+riverdi-demo
+*.bin
+*.hex
+*.elf
+*.map
+*.o
+tags
