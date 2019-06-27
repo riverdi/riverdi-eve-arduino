@@ -14,8 +14,11 @@
   #define FT80X_ENABLE
 #elif defined (EVE_2)
   #define FT81X_ENABLE
+#elif defined (EVE_3)
+  #define BT81X_ENABLE
+  #define FT81X_ENABLE
 #else
-  #error "Please choose generation of Embedded Video Engine (EVE_1, EVE_2)"
+  #error "Please choose generation of Embedded Video Engine (EVE_1, EVE_2, EVE_3)"
 #endif
 
 /*
@@ -81,7 +84,7 @@
   #define DispVSync1     10L
   #define DispPCLK       2
   #define DispSwizzle    0
-  #define DispPCLKPol    0
+  #define DispPCLKPol    1
   #define DispCSpread    0
   #define DispDither     1
 #elif defined (NTP_70) || defined (RTP_70) || defined (CTP_70)
@@ -97,7 +100,7 @@
   #define DispVSync1     10L
   #define DispPCLK       2
   #define DispSwizzle    0
-  #define DispPCLKPol    0
+  #define DispPCLKPol    1
   #define DispCSpread    0
   #define DispDither     1
 #else

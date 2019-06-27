@@ -176,4 +176,3 @@ SAMAPP_GPU_Ball_Stencil()
         Gpu_Hal_DLSwap(phost,DLSWAP_FRAME);
       } /* while */
 }
-
