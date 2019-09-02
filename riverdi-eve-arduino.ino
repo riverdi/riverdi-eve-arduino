@@ -32,20 +32,20 @@ void loop()
   Gpu_Hal_DeInit();
 }
 
-static float
+float
 lerp (float t, float a, float b)
 {
   return (float)((1 - t) * a + t * b);
 }
 
-static float
+float
 smoothlerp (float t, float a, float b)
 {
   float lt = 3 * t * t - 2 * t * t * t;
   return lerp(lt, a, b);
 }
 
-static void
+void
 SAMAPP_GPU_Ball_Stencil()
 {
   int16_t xball = (DispWidth/2),yball = 120,rball = (DispWidth/8);

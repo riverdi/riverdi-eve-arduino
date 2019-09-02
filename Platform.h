@@ -37,19 +37,26 @@
 
 //#define NTP_50
 //#define RTP_50
-//#define CTP_50
+#define CTP_50
 
 //#define NTP_70
 //#define RTP_70
-#define CTP_70
+//#define CTP_70
 
 /*****************************************************************************/
 
 #define ARDUINO_PLATFORM
 #define ARDUINO_PLATFORM_COCMD_BURST
 
-#define GPIO_CS     10		/* chip select pin */
-#define GPIO_PD     8		/* power down pin */
+#ifdef __AVR__
+#define GPIO_CS     10
+#define GPIO_PD     8
+#endif
+
+#ifdef ESP32 /* Riverdi IoT Display */
+#define GPIO_CS     4
+#define GPIO_PD     33
+#endif
 
 /* Standard C libraries */
 #include <stdio.h>
@@ -58,7 +65,10 @@
 #include <Arduino.h>
 #include <EEPROM.h>
 #include <SPI.h>
+
+#ifdef __AVR__
 #include <avr/pgmspace.h>
+#endif
 
 /*****************************************************************************/
 
@@ -73,6 +83,11 @@ typedef unsigned char	uchar8_t;
 typedef signed char	schar8_t;
 typedef float		float_t;
 
+#ifdef ESP32 /* Riverdi IoT Display */
+typedef PROGMEM const unsigned char  prog_uchar8_t;
+#endif
+
+#ifdef __AVR__
 typedef PROGMEM const unsigned char  prog_uchar8_t;
 typedef PROGMEM const char           prog_char8_t;
 typedef PROGMEM const uint8_t        prog_uint8_t;
@@ -81,6 +96,7 @@ typedef PROGMEM const uint16_t       prog_uint16_t;
 typedef PROGMEM const int16_t        prog_int16_t;
 typedef PROGMEM const uint32_t       prog_uint32_t;
 typedef PROGMEM const int32_t        prog_int32_t;
+#endif
 
 /* Predefined Riverdi modules */
 #include "Riverdi_Modules.h"

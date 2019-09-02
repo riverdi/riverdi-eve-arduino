@@ -53,7 +53,12 @@ Gpu_Hal_Open (Gpu_Hal_Context_t *host)
   digitalWrite(GPIO_PD, HIGH);
 
   /* spi */
+#ifdef ESP32 /* Riverdi IoT Display */
+  SPI.begin(14, 2, 15, 4);
+#else
   SPI.begin();
+#endif
+
   SPI.setClockDivider(SPI_CLOCK_DIV2);
   SPI.setBitOrder(MSBFIRST);
   SPI.setDataMode(SPI_MODE0);
@@ -1099,4 +1104,3 @@ void Gpu_Hal_WrCmdBufFromFlash (Gpu_Hal_Context_t *host,PROGMEM prog_uchar8_t *b
       count -= length;
     } while (count > 0);
 }
-
