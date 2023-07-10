@@ -2,15 +2,16 @@ OVERVIEW
 --------
 ![alt text](http://circuitcellar.com/wp-content/uploads/2016/10/FTDI-Img.png "riverdi-logo")
 
-*riverdi-eve-arduino* project is an easy-to-use library and example Arduino app (good starting point for your own projects) for the Bridgetek’s [*FT8XX EVE (Embedded Video Engine)*](http://brtchip.com/eve/) solutions:
+*riverdi-eve-arduino* is an easy-to-use library and example Arduino app (good starting poiny for you own projects) for [*Riverdi Intelligent Display*](https://riverdi.com/product-category/intelligent-displays/bt817q/) driven by [*Bridgetek EVE graphics controllers*](http://brtchip.com/eve/):
 
 - __EVE 1__ series: FT800 and FT801,
 - __EVE 2__ series: FT810, FT811, FT812 and FT813,
-- __EVE 3__ series: BT815 and BT816 (available soon),
+- __EVE 3__ series: BT815 and BT816,
+- __EVE 4__ series: BT817 and BT818
 
-Library supports instructions in a similar format to the *FT80x and FT81x Series Programmers Guides* and the *EVE Screen Editor*. 
+Library supports instructions in a similar format to the [*FT80x and FT81x Series Programmers Guides*](https://brtchip.com/wp-content/uploads/Support/Documentation/Programming_Guides/ICs/EVE/FT81X_Series_Programmer_Guide.pdf), [*BT81X Series Programming Guide*](https://brtchip.com/wp-content/uploads/2022/12/BRT_AN_033_BT81X-Series-Programming-Guide.pdf) and the [*EVE Screen Editor*](https://brtchip.com/ese-2/).
 
-__Note:__ *a pure C version of riverdi-eve-arduino library with support for the most popular hardware/software platforms like: Raspberry Pi (and other linux-based Single Board Computers), STM32 and Windows (with FT232H USB-SPI converter) is available as a separate GitHub repository - [*riverdi-eve*](https://github.com/riverdi/riverdi-eve)*
+__Note:__ *a pure C version of library is available as a separate GitHub repository - [*riverdi-eve-lib*](https://github.com/riverdi/riverdi-eve-lib)*
 
 LIBRARY ARCHITECTURE
 --------------------
@@ -39,12 +40,12 @@ git clone https://github.com/riverdi/riverdi-eve-arduino.git
 4. File > Open > select the *riverdi-eve-arduino.ino* file
 5. Build (Ctrl+R) and upload (Ctrl+U) project to your Arduino Device.
 
-__Note:__ *before compilation please edit Platform.h file to choose Embedded Video Engine series (-DEVE_1, -DEVE_2 or -DEVE_3 flags), choose type and size of connected TFT module (choose predefined macros for Riverdi EVE modules or edit timings manually in Riverdi_Modules.h file for custom displays) or to redefine Chip Select and Power Down pins (default configuration supports [*Arduino Riverdi TFT Shield*](https://riverdi.com/product/arduino-riverdi-tft-shield/)).*  
+__Note:__ *before compilation please edit Platform.h file to choose Embedded Video Engine series (-DEVE_1, -DEVE_2, -DEVE_3 or -DEVE_4 flags), choose type and size of connected TFT module (choose predefined macros for Riverdi EVE modules or edit timings manually in Riverdi_Modules.h file for custom displays) or to redefine Chip Select and Power Down pins (default configuration supports [*Arduino Riverdi TFT Shield*](https://riverdi.com/product/arduino-riverdi-tft-shield/)).*
 
 GETTING HELP
 ------------
 
-Please contact Riverdi support - [*<support@riverdi.com>*](support@riverdi.com)
+Please contact Riverdi support - [*<contact@riverdi.com>*](contact@riverdi.com)
 
 LICENSE
 -------
