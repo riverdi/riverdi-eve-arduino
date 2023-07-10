@@ -216,13 +216,14 @@ void Gpu_CoreReset(Gpu_Hal_Context_t *host);
 
 /******************************************************************************/
 
-#ifdef FT81X_ENABLE
+#if (defined(FT81X_ENABLE))  || (defined(BT81X_ENABLE))
 
 #define GPU_81X_RESET_ACTIVE	0x000268
 #define GPU_81X_RESET_REMOVAL	0x002068
 
 typedef enum {
   GPU_SYSCLK_DEFAULT =	0x00, /* default 60MHz */
+  GPU_SYSCLK_84M =	0x07,
   GPU_SYSCLK_72M =	0x06,
   GPU_SYSCLK_60M =	0x05,
   GPU_SYSCLK_48M =	0x04,
@@ -274,7 +275,7 @@ void Gpu_81X_ResetActive(Gpu_Hal_Context_t *host);
 void Gpu_81X_ResetRemoval(Gpu_Hal_Context_t *host);
 int16_t Gpu_Hal_SetSPI(Gpu_Hal_Context_t *host,GPU_SPI_NUMCHANNELS_T numchnls,GPU_SPI_NUMDUMMYBYTES numdummy);
 
-#endif /* FT81X_ENABLE */
+#endif /* (FT81X_ENABLE) || (BT81X_ENABLE) */
 
 /******************************************************************************/
 

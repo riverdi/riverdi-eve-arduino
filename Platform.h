@@ -8,40 +8,31 @@
 
 /*****************************************************************************/
 
-//#define EVE_1		/* for FT80x series */
-//#define EVE_2		/* for FT81x series */
-#define EVE_3   /* for BT81x series */
+//#define EVE_1                 1
+//#define EVE_2                 1
+//#define EVE_3                 1
+#define EVE_4                 1
 
-/*****************************************************************************/
+#define EVE_4_INTERNAL_OSC    1
+//#define EVE_4_EXTERNAL_OSC    1
 
-/*
- * Touch Screen:
- *   NTP_XX -> None
- *   RTP_XX -> Resisitve
- *   CTP_XX -> Capacitive
- *
- * Size:
- *   XXX_35 -> 3.5' TFT DISPLAY
- *   XXX_43 -> 4.3' TFT DISPLAY
- *   XXX_50 -> 5.0' TFT DISPLAY
- *   XXX_70 -> 7.0' TFT DISPLAY
- */
-
-//#define NTP_35
-//#define RTP_35
-//#define CTP_35
-
-//#define NTP_43
-//#define RTP_43
-//#define CTP_43
-
-//#define NTP_50
-//#define RTP_50
-#define CTP_50
-
-//#define NTP_70
-//#define RTP_70
-//#define CTP_70
+//#define NTP_35                1
+//#define RTP_35                1
+//#define CTP_35                1
+//#define NTP_43                1
+//#define RTP_43                1
+//#define CTP_43                1
+//#define NTP_50                1
+//#define RTP_50                1
+//#define CTP_50                1
+//#define NTP_70                1
+//#define RTP_70                1
+//#define CTP_70                1
+//#define IPS_35                1
+//#define IPS_43                1
+//#define IPS_50                1
+//#define IPS_70                1
+#define IPS_101               1
 
 /*****************************************************************************/
 

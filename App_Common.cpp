@@ -780,92 +780,122 @@ void App_Show_Logo(Gpu_Hal_Context_t *phost)
 
 /******************************************************************************/
 
-void App_Common_Init(Gpu_Hal_Context_t *phost)
-{
-    Gpu_HalInit_t halinit;
-    uint8_t chipid;
+void App_Common_Init(Gpu_Hal_Context_t *phost) {
+	Gpu_HalInit_t halinit;
+	uint8_t chipid;
 
-    Gpu_Hal_Init(&halinit);
-    Gpu_Hal_Open(phost);
+	Gpu_Hal_Init(&halinit);
+	Gpu_Hal_Open(phost);
 
-    Gpu_Hal_Powercycle(phost,TRUE);
+	Gpu_Hal_Powercycle(phost, TRUE);
 
-    /* FT81x will be in SPI Single channel after POR
-    If we are here with FT4222 in multi channel, then
-    an explicit switch to single channel is essential
-    */
-#ifdef FT81X_ENABLE
-    Gpu_Hal_SetSPI(phost, GPU_SPI_SINGLE_CHANNEL, GPU_SPI_ONEDUMMY);
+	/* FT81x will be in SPI Single channel after POR
+	 If we are here with FT4222 in multi channel, then
+	 an explicit switch to single channel is essential
+	 */
+#if (defined(FT81X_ENABLE))  || (defined(BT81X_ENABLE))
+	Gpu_Hal_SetSPI(phost, GPU_SPI_SINGLE_CHANNEL, GPU_SPI_ONEDUMMY);
 #endif
 
-    /* access address 0 to wake up the chip */
-    Gpu_HostCommand(phost,GPU_ACTIVE_M);
-    Gpu_Hal_Sleep(300);
+//    Gpu_HostCommand(phost,0x68);
+//    Gpu_Hal_Sleep(300);
 
+	/* access address 0 to wake up the chip */
+	//Gpu_HostCommand(phost, GPU_SLEEP_M);
+
+	//Gpu_Hal_Sleep(300);
+
+#if (defined(EVE_2) && (defined(NTP_50)||defined(RTP_50)||defined(CTP_50)||defined(NTP_70)||defined(RTP_70)||defined(CTP_70)))
     Gpu_HostCommand(phost,GPU_INTERNAL_OSC);
-    Gpu_Hal_Sleep(100);
-
-    /* read Register ID to check if chip ID series is correct */
-    chipid = Gpu_Hal_Rd8(phost, REG_ID);
-    while(chipid != 0x7C)
-      {
-        chipid = Gpu_Hal_Rd8(phost, REG_ID);
-        Gpu_Hal_Sleep(100);
-      }
-
-    /* read REG_CPURESET to confirm 0 is returned */
-    {
-      uint8_t engine_status;
-
-      /* Read REG_CPURESET to check if engines are ready.
-           Bit 0 for coprocessor engine,
-           Bit 1 for touch engine,
-           Bit 2 for audio engine.
-      */
-      engine_status = Gpu_Hal_Rd8(phost, REG_CPURESET);
-      while(engine_status != 0x00)
-        {
-          engine_status = Gpu_Hal_Rd8(phost, REG_CPURESET);
-          Gpu_Hal_Sleep(100);
-        }
-    }
-
-    /* configuration of LCD display */
-    Gpu_Hal_Wr16(phost, REG_HCYCLE, DispHCycle);
-    Gpu_Hal_Wr16(phost, REG_HOFFSET, DispHOffset);
-    Gpu_Hal_Wr16(phost, REG_HSYNC0, DispHSync0);
-    Gpu_Hal_Wr16(phost, REG_HSYNC1, DispHSync1);
-    Gpu_Hal_Wr16(phost, REG_VCYCLE, DispVCycle);
-    Gpu_Hal_Wr16(phost, REG_VOFFSET, DispVOffset);
-    Gpu_Hal_Wr16(phost, REG_VSYNC0, DispVSync0);
-    Gpu_Hal_Wr16(phost, REG_VSYNC1, DispVSync1);
-    Gpu_Hal_Wr8(phost, REG_SWIZZLE, DispSwizzle);
-    Gpu_Hal_Wr8(phost, REG_PCLK_POL, DispPCLKPol);
-    Gpu_Hal_Wr16(phost, REG_HSIZE, DispWidth);
-    Gpu_Hal_Wr16(phost, REG_VSIZE, DispHeight);
-    Gpu_Hal_Wr16(phost, REG_CSPREAD, DispCSpread);
-    Gpu_Hal_Wr16(phost, REG_DITHER, DispDither);
-
-    /* GPIO configuration */
-#if defined(FT81X_ENABLE)
-    Gpu_Hal_Wr16(phost, REG_GPIOX_DIR, 0xffff);
-    Gpu_Hal_Wr16(phost, REG_GPIOX, 0xffff);
 #else
-    Gpu_Hal_Wr8(phost, REG_GPIO_DIR,0xff);
-    Gpu_Hal_Wr8(phost, REG_GPIO,0xff);
+#if (defined(EVE_4_INTERNAL_OSC))
+	Gpu_HostCommand(phost, GPU_INTERNAL_OSC);
+#else
+	Gpu_HostCommand(phost,GPU_EXTERNAL_OSC);
+#endif
 #endif
 
-    Gpu_ClearScreen(phost);
+	Gpu_Hal_Sleep(100);
+	Gpu_HostCommand(phost, GPU_ACTIVE_M);
+	Gpu_Hal_Sleep(300);
 
-    /* after this display is visible on the LCD */
-    Gpu_Hal_Wr8(phost, REG_PCLK,DispPCLK);
+	//Gpu_HostCommand(phost,GPU_EXTERNAL_OSC);
+	//Gpu_HostCommand(phost,GPU_PLL_48M);
+	//Gpu_81X_SelectSysCLK(phost, GPU_SYSCLK_72M);
 
-    phost->cmd_fifo_wp = Gpu_Hal_Rd16(phost,REG_CMD_WRITE);
+	Gpu_Hal_Wr32(phost, REG_FREQUENCY, 72000000);
+
+	uint32_t freq = Gpu_Hal_Rd32(phost, REG_FREQUENCY);
+
+	Gpu_Hal_Wr8(phost, REG_TRIM, 25);
+
+	/* read Register ID to check if chip ID series is correct */
+	chipid = Gpu_Hal_Rd8(phost, REG_ID);
+	while (chipid != 0x7C) {
+		chipid = Gpu_Hal_Rd8(phost, REG_ID);
+		Gpu_Hal_Sleep(100);
+	}
+
+	/* read REG_CPURESET to confirm 0 is returned */
+	{
+		uint8_t engine_status;
+
+		/* Read REG_CPURESET to check if engines are ready.
+		 Bit 0 for coprocessor engine,
+		 Bit 1 for touch engine,
+		 Bit 2 for audio engine.
+		 */
+		engine_status = Gpu_Hal_Rd8(phost, REG_CPURESET);
+		while (engine_status != 0x00) {
+			engine_status = Gpu_Hal_Rd8(phost, REG_CPURESET);
+			Gpu_Hal_Sleep(100);
+		}
+	}
+
+	Gpu_Hal_Wr16(phost, REG_PWM_HZ, 4000);
+	Gpu_Hal_Wr8(phost, REG_PWM_DUTY, 128);
+
+	uint16_t pwmHz = Gpu_Hal_Rd16(phost, REG_PWM_HZ);
+
+#if defined (EVE_4)
+	Gpu_Hal_Wr16(phost, REG_PCLK_FREQ, DispPLCLKFREQ);
+	Gpu_Hal_Wr8(phost, REG_PCLK_2X, DispPCLK2x);
+#endif
+
+	/* configuration of LCD display */
+	Gpu_Hal_Wr16(phost, REG_HCYCLE, DispHCycle);
+	Gpu_Hal_Wr16(phost, REG_HOFFSET, DispHOffset);
+	Gpu_Hal_Wr16(phost, REG_HSYNC0, DispHSync0);
+	Gpu_Hal_Wr16(phost, REG_HSYNC1, DispHSync1);
+	Gpu_Hal_Wr16(phost, REG_VCYCLE, DispVCycle);
+	Gpu_Hal_Wr16(phost, REG_VOFFSET, DispVOffset);
+	Gpu_Hal_Wr16(phost, REG_VSYNC0, DispVSync0);
+	Gpu_Hal_Wr16(phost, REG_VSYNC1, DispVSync1);
+	Gpu_Hal_Wr8(phost, REG_SWIZZLE, DispSwizzle);
+	Gpu_Hal_Wr8(phost, REG_PCLK_POL, DispPCLKPol);
+	Gpu_Hal_Wr16(phost, REG_HSIZE, DispWidth);
+	Gpu_Hal_Wr16(phost, REG_VSIZE, DispHeight);
+	Gpu_Hal_Wr16(phost, REG_CSPREAD, DispCSpread);
+	Gpu_Hal_Wr16(phost, REG_DITHER, DispDither);
+
+	/* GPIO configuration */
+#if (defined(FT81X_ENABLE))  || (defined(BT81X_ENABLE))
+	Gpu_Hal_Wr16(phost, REG_GPIOX_DIR, 0xFFFF);
+	Gpu_Hal_Wr16(phost, REG_GPIOX, 0xFFFF);
+#else
+	Gpu_Hal_Wr8(phost, REG_GPIO_DIR, 0xFF);
+	Gpu_Hal_Wr8(phost, REG_GPIO, 0xFF);
+#endif
+
+	Gpu_ClearScreen(phost);
+
+	/* after this display is visible on the LCD */
+	Gpu_Hal_Wr8(phost, REG_PCLK, DispPCLK);
+
+	phost->cmd_fifo_wp = Gpu_Hal_Rd16(phost, REG_CMD_WRITE);
 }
 
-
-void App_Common_Close(Gpu_Hal_Context_t *phost)
-{
-    Gpu_Hal_Close(phost);
-    Gpu_Hal_DeInit();
+void App_Common_Close(Gpu_Hal_Context_t *phost) {
+	Gpu_Hal_Close(phost);
+	Gpu_Hal_DeInit();
 }

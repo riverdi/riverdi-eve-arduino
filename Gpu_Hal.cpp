@@ -505,7 +505,7 @@ Gpu_CoreReset (Gpu_Hal_Context_t *host)
 
 /*****************************************************************************/
 
-#ifdef FT81X_ENABLE
+#if (defined(FT81X_ENABLE))  || (defined(BT81X_ENABLE))
 
 /*
  * Gpu_81X_SelectSysCLK()
@@ -619,7 +619,7 @@ Gpu_Hal_SetSPI (Gpu_Hal_Context_t      *host,
   return 0;
 }
 
-#endif /* FT81X_ENABLE */
+#endif /* (FT81X_ENABLE) || (BT81X_ENABLE) */
 
 /*****************************************************************************/
 
